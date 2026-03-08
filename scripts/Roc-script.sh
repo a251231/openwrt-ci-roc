@@ -84,3 +84,8 @@ echo "baidu.com"  > package/luci-app-passwall/luci-app-passwall/root/usr/share/p
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
+
+# Rust 1.90 host build currently fails when trying to download prebuilt CI LLVM
+# artifacts that may already be pruned upstream. Force local LLVM bootstrap instead.
+sed -i 's/--set=llvm.download-ci-llvm=true/--set=llvm.download-ci-llvm=false/' feeds/packages/lang/rust/Makefile
+sed -i '/--ci false \\/d' feeds/packages/lang/rust/Makefile
